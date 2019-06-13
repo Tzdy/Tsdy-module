@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="https://tzdy.github.io/Record/tool.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			body,
+			html {
+				width: 100%;
+
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="css/Tsdy-router.css" />
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	</head>
+	<body>
+		<div>
+
+
+			<div class="Tsdy-router">
+				<div>click</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		div = document.getElementsByTagName("div")[2];
+		body = $('div', 0);
+		html = $('body', 0);
+		div.onclick = function() {
+			ajax_get('./app.html', false, function(xhr) {
+				window.msg = xhr.responseText;
+				window.body.style.display = "none";
+				var node = document.createElement('div');
+				node.innerHTML = window.msg;
+				var x = node.querySelectorAll('script');
+				for (var i = 0; i < x.length; i++) {
+					var a = x[i].getAttribute('src');
+					console.log(a);
+					if(a){
+					var scrnode = document.createElement('script');
+					scrnode.setAttribute('src',a);
+					x[i].parentNode.appendChild(scrnode);
+					}
+					// if (a) {
+					// 	var node = document.createElement('script');
+					// 	
+					// }
+				}
+				// console.log(x[2].attributes[0].nodeValue);
+				// for(var i = 0 ; i < x.length ; i++ ){
+				// 	var scr = document.createElement('script');
+				// 	scr.src = x[i].src;
+				// 	x[i].parentNode.appendChild(scr);
+				// }
+				html.appendChild(node);
+
+
+			})
+		}
+	</script>
+</html>

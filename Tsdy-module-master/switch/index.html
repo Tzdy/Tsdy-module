@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/switch.css" />
+	</head>
+	<body>
+		<div class="Tsdy-switch"></div>
+		<div class="Tsdy-switch" style="position: absolute;left: 50%;"></div>
+
+
+		<div id="app"></div>
+	</body>
+	<script src="js/switch.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		function $(str, ...arr) { // node , 选第几个
+			var node = null;
+			var s = str;
+			if (str[0] == '.') {
+				s = s.replace('.', '');
+				node = arr.length == 0 ? document.getElementsByClassName(s) : document.getElementsByClassName(s)[arr[0]];
+			} else if (str[0] == '#') {
+				s = s.replace('#', '');
+				node = document.getElementById(s);
+			} else if (str.search(/^\w/) == 0) {
+				node = arr.length == 0 ? document.getElementsByTagName(s) : document.getElementsByTagName(s)[arr[0]];
+			}
+			return node;
+		}
+
+		var div = $('#app');
+		// var x = new Tsdy_Switch([
+		// 	function(judge){
+		// 		if(judge)
+		// 			console.log("1");
+		// 		else
+		// 			console.log(2);
+		// 	},
+		// 	function(judge){
+		// 		if(judge)
+		// 			console.log("a");
+		// 		else
+		// 			console.log("b");
+		// 	}
+		// ]);
+
+		var x = new Tsdy_Switch([
+			{
+				methods:[
+					function(judge) {
+						console.log(judge);
+					},
+					function(judge){
+						console.log(judge);
+					}
+				],
+				style:"position:relative;left:23%;"
+			},
+			{
+				methods:[
+					function(judge) {
+						console.log(judge);
+					}
+				],
+				style:"position:absolute;left:67%;"
+			}
+		
+		])
+	</script>
+</html>

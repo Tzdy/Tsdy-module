@@ -15,3 +15,10 @@
 	line-height: 4rem;
 	text-align: center;
 }
+
+.router{
+	position: relative;
+	transition: left .3s;
+	width: 100%;
+}
+

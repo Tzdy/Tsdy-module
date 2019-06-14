@@ -17,13 +17,15 @@
 		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
 	</head>
 	<body>
+		<div id="">
+			
+	
 		<div>
-
-
 			<div class="Tsdy-router">
 				<div>click</div>
 			</div>
 		</div>
+			</div>
 	</body>
 	<script type="text/javascript">
 		div = document.getElementsByTagName("div")[2];
@@ -32,32 +34,30 @@
 		div.onclick = function() {
 			ajax_get('./app.html', false, function(xhr) {
 				window.msg = xhr.responseText;
-				window.body.style.display = "none";
+				
 				var node = document.createElement('div');
 				node.innerHTML = window.msg;
-				var x = node.querySelectorAll('script');
+				var x = node.querySelectorAll('script'); //这里必须这样选择,不能用document.get...不然会进入死循环
 				for (var i = 0; i < x.length; i++) {
 					var a = x[i].getAttribute('src');
-					console.log(a);
-					if(a){
 					var scrnode = document.createElement('script');
-					scrnode.setAttribute('src',a);
-					x[i].parentNode.appendChild(scrnode);
+					if (a) {
+						scrnode.setAttribute('src', a);
+					} else {
+						scrnode.text = x[i].text;
 					}
-					// if (a) {
-					// 	var node = document.createElement('script');
-					// 	
-					// }
+					x[i].parentNode.replaceChild(scrnode,x[i]);
 				}
-				// console.log(x[2].attributes[0].nodeValue);
-				// for(var i = 0 ; i < x.length ; i++ ){
-				// 	var scr = document.createElement('script');
-				// 	scr.src = x[i].src;
-				// 	x[i].parentNode.appendChild(scr);
-				// }
-				html.appendChild(node);
-
-
+				var d = document.createElement('div');
+				d.className = "router";
+				d.style.left = screen.width + "px";
+				d.appendChild(node);
+				html.appendChild(d);
+				setTimeout(()=>{
+					window.body.style.display = "none";
+					$('.router',0).style.left = 0;
+				},1)
+				
 			})
 		}
 	</script>

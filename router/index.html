@@ -18,23 +18,29 @@
 	</head>
 	<body>
 		<div id="">
-			
-	
-		<div>
-			<div class="Tsdy-router">
-				<div>click</div>
+
+
+			<div>
+				<div class="Tsdy-router">
+					<div>click</div>
+				</div>
 			</div>
 		</div>
-			</div>
 	</body>
 	<script type="text/javascript">
 		div = document.getElementsByTagName("div")[2];
 		body = $('div', 0);
 		html = $('body', 0);
+		let judge = true;
+		var d = null;
+		var returnPage = null;
 		div.onclick = function() {
+			if(judge){
+				
+			
 			ajax_get('./app.html', false, function(xhr) {
 				window.msg = xhr.responseText;
-				
+
 				var node = document.createElement('div');
 				node.innerHTML = window.msg;
 				var x = node.querySelectorAll('script'); //这里必须这样选择,不能用document.get...不然会进入死循环
@@ -46,19 +52,39 @@
 					} else {
 						scrnode.text = x[i].text;
 					}
-					x[i].parentNode.replaceChild(scrnode,x[i]);
+					x[i].parentNode.replaceChild(scrnode, x[i]);
 				}
-				var d = document.createElement('div');
+				d = document.createElement('div');
+				returnPage = document.createElement('label');
+				returnPage.innerText = "返回"; //返回按钮
 				d.className = "router";
+				returnPage.className = "return"
 				d.style.left = screen.width + "px";
+				returnPage.style.left = screen.width + "px";
+				d.appendChild(returnPage);
+				console.log(returnPage);
 				d.appendChild(node);
 				html.appendChild(d);
-				setTimeout(()=>{
+				setTimeout(() => {
 					window.body.style.display = "none";
-					$('.router',0).style.left = 0;
-				},1)
-				
+					d.style.left = 0;
+					returnPage.style.left = 0;
+				}, 1)
+				returnPage.addEventListener('click', () => {
+					window.body.style.display = "block";
+					d.style.left = screen.width + "px";
+					returnPage.style.left = screen.width + "px";
+				})
+
 			})
+			judge = false;
+			}else{
+				setTimeout(() => {
+					window.body.style.display = "none";
+					d.style.left = 0;
+					returnPage.style.left = 0;
+				}, 1)
+			}
 		}
 	</script>
 </html>

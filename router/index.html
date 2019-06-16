@@ -13,78 +13,73 @@
 				padding: 0;
 			}
 		</style>
-		<link rel="stylesheet" type="text/css" href="css/Tsdy-router.css" />
 		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
 	</head>
 	<body>
-		<div id="">
-
-
-			<div>
-				<div class="Tsdy-router">
-					<div>click</div>
-				</div>
-			</div>
+		<div class="Tsdy-router">
+			<div class="router">click me!</div>
 		</div>
 	</body>
+	<script src="js/Tsdy-router.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
-		div = document.getElementsByTagName("div")[2];
-		body = $('div', 0);
-		html = $('body', 0);
-		let judge = true;
-		var d = null;
-		var returnPage = null;
-		div.onclick = function() {
-			if(judge){
-				
-			
-			ajax_get('./app.html', false, function(xhr) {
-				window.msg = xhr.responseText;
-
-				var node = document.createElement('div');
-				node.innerHTML = window.msg;
-				var x = node.querySelectorAll('script'); //这里必须这样选择,不能用document.get...不然会进入死循环
-				for (var i = 0; i < x.length; i++) {
-					var a = x[i].getAttribute('src');
-					var scrnode = document.createElement('script');
-					if (a) {
-						scrnode.setAttribute('src', a);
-					} else {
-						scrnode.text = x[i].text;
-					}
-					x[i].parentNode.replaceChild(scrnode, x[i]);
-				}
-				d = document.createElement('div');
-				returnPage = document.createElement('label');
-				returnPage.innerText = "返回"; //返回按钮
-				d.className = "router";
-				returnPage.className = "return"
-				d.style.left = screen.width + "px";
-				returnPage.style.left = screen.width + "px";
-				d.appendChild(returnPage);
-				console.log(returnPage);
-				d.appendChild(node);
-				html.appendChild(d);
-				setTimeout(() => {
-					window.body.style.display = "none";
-					d.style.left = 0;
-					returnPage.style.left = 0;
-				}, 1)
-				returnPage.addEventListener('click', () => {
-					window.body.style.display = "block";
-					d.style.left = screen.width + "px";
-					returnPage.style.left = screen.width + "px";
-				})
-
-			})
-			judge = false;
-			}else{
-				setTimeout(() => {
-					window.body.style.display = "none";
-					d.style.left = 0;
-					returnPage.style.left = 0;
-				}, 1)
-			}
-		}
+		var d = new Tsdy_Router([
+			['./app.html']
+		])
+// 		div = document.getElementsByTagName("div")[2];
+// 		body = $('div', 0);
+// 		html = $('body', 0);
+// 		let judge = true;
+// 		var d = null;
+// 		var returnPage = null;
+// 		div.onclick = function() {
+// 			if (judge) {
+// 				ajax_get('./app.html', false, function(xhr) {
+// 					window.msg = xhr.responseText;
+// 
+// 					var node = document.createElement('div');
+// 					node.innerHTML = window.msg;
+// 					var x = node.querySelectorAll('script'); //这里必须这样选择,不能用document.get...不然会进入死循环
+// 					for (var i = 0; i < x.length; i++) {
+// 						var a = x[i].getAttribute('src');
+// 						var scrnode = document.createElement('script');
+// 						if (a) {
+// 							scrnode.setAttribute('src', a);
+// 						} else {
+// 							scrnode.text = x[i].text;
+// 						}
+// 						x[i].parentNode.replaceChild(scrnode, x[i]);
+// 					}
+// 					d = document.createElement('div');
+// 					returnPage = document.createElement('label');
+// 					returnPage.innerText = "返回"; //返回按钮
+// 					d.className = "router";
+// 					returnPage.className = "return"
+// 					d.style.left = screen.width + "px";
+// 					returnPage.style.left = screen.width + "px";
+// 					d.appendChild(returnPage);
+// 					console.log(returnPage);
+// 					d.appendChild(node);
+// 					html.appendChild(d);
+// 					setTimeout(() => {
+// 						window.body.style.display = "none";
+// 						d.style.left = 0;
+// 						returnPage.style.left = 0;
+// 					}, 1)
+// 					returnPage.addEventListener('click', () => {
+// 						window.body.style.display = "block";
+// 						d.style.left = screen.width + "px";
+// 						returnPage.style.left = screen.width + "px";
+// 					})
+// 
+// 				})
+// 				judge = false;
+// 			} else {
+// 				setTimeout(() => {
+// 					window.body.style.display = "none";
+// 					d.style.left = 0;
+// 					returnPage.style.left = 0;
+// 				}, 1)
+// 			}
+// 		}
 	</script>
 </html>

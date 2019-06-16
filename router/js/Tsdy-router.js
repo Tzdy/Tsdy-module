@@ -12,8 +12,8 @@
 				sit: this.length,
 				beforeSit: this.length - 1,
 				innerHtml: xhr.responseText,
-				node: null,
-				childNode: null,
+				node: null, 
+				childNode: null,    //object
 				display: false
 			}
 		});
@@ -32,6 +32,7 @@
 			script[i].parentNode.replaceChild(scrnode, script[i]);
 		}
 		obj.node = node;
+		obj.childNode = node.getElementsByClassName('router');
 		this.router.push(obj);
 		this.addEvent();
 		this.length++;
@@ -44,7 +45,6 @@
 	Tsdy_Router.prototype.init = function() {
 		father = document.getElementsByClassName('Tsdy-router')[0];
 		children = document.getElementsByClassName('router');
-
 		var obj = {
 			sit: 0,
 			beforeSit: -1,
@@ -62,7 +62,8 @@
 		let nowLength = this.length
 		console.log(this.length);
 		console.log(this.router[this.length]);
-		if (this.router[this.length].childNode) {
+		console.log(typeof this.router[this.length].childNode);
+		if (this.router[this.length].childNode.length) {
 
 
 			for (var i = 0; i < this.router[this.length].childNode.length; i++) {

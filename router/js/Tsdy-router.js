@@ -14,10 +14,11 @@
 				innerHtml: xhr.responseText,
 				node: null, 
 				childNode: null,    //object
-				display: false
+				display: false,
+				returnPage:null
 			}
 		});
-		var div = document.createElement('div');
+		var div = document.createElement('div');  
 		div.innerHTML = obj.innerHtml;
 		var node = div.getElementsByClassName('Tsdy-router')[0];
 		var script = node.querySelectorAll('script');
@@ -31,13 +32,18 @@
 			}
 			script[i].parentNode.replaceChild(scrnode, script[i]);
 		}
+		var returnPage = document.createElement('div');   //返回按钮
+		returnPage.className = "returnPage";
+		returnPage.innerText = "返回";
+		node.appendChild(returnPage);
+		obj.returnPage = returnPage;
 		obj.node = node;
 		obj.childNode = node.getElementsByClassName('router');
 		this.router.push(obj);
 		this.addEvent();
 		this.length++;
-		this.update(obj);
-		this.render();
+		this.updateOpen(obj);
+		this.renderOpen();
 		document.body.appendChild(obj.node); //sddsmvndskvjsljvsj
 
 	}
@@ -52,7 +58,7 @@
 			childNode: children,
 			display: true
 		}
-		this.render();
+		this.renderOpen();
 		this.router.push(obj);
 		this.addEvent();
 		this.length++;
@@ -65,7 +71,7 @@
 		console.log(typeof this.router[this.length].childNode);
 		if (this.router[this.length].childNode.length) {
 
-
+			
 			for (var i = 0; i < this.router[this.length].childNode.length; i++) {
 				let j = i;
 				this.router[this.length].childNode[j].addEventListener('click', () => {
@@ -77,11 +83,20 @@
 			console.log("没了");
 		}
 
-
+		if(this.router[this.length].returnPage){
+			let length = this.length;
+			this.router[this.length].returnPage.addEventListener('click', ()=>{
+				document.body.removeChild(this.router[length].node);
+				this.updateClose(this.router[length]);
+				this.router.splice(length,1);
+				this.length = length --;
+				this.renderOpen();
+			})
+		}
 	}
 
 
-	Tsdy_Router.prototype.render = function() {
+	Tsdy_Router.prototype.renderOpen = function() {
 		for (var i = 0; i < this.length; i++) {
 			if (this.router[i].display) {
 				this.router[i].node.style.display = "block";
@@ -91,9 +106,13 @@
 		}
 	}
 
-	Tsdy_Router.prototype.update = function(node) {
+	Tsdy_Router.prototype.updateOpen = function(node) {
 		node.display = true;
 		this.router[node.beforeSit].display = false;
+	}
+	
+	Tsdy_Router.prototype.updateClose = function(node) {
+		this.router[node.beforeSit].display = true;
 	}
 }());
 
@@ -102,3 +121,4 @@
 // init => addEvent => ajax_get => 给虚拟addEvent
 //								=> update刷新display
 //								=> render根据display属性修改dom属性display
+// 我在ajax_get中调用addEvent ,在addEvevt中调用ajax_get是有原因的

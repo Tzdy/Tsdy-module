@@ -2,35 +2,36 @@
 	var Tsdy_Router = window.Tsdy_Router = function(urlList, ...args) {
 		this.router = [];
 		this.page = 0;
-		this,state = null;  //当前页面的url
+		this, state = null; //当前页面的url
 		this.length = 0;
 		this.urlList = urlList;
+		this.returnJudge = true;
 		this.init();
 	}
 	Tsdy_Router.prototype.ajax_get = function(url) {
 		console.log(url);
 		var obj = null;
 		ajax_get(url, false, (xhr) => {
-			obj = {   //虚拟dom的属性，
+			obj = { //虚拟dom的属性，
 				sit: this.length,
 				beforeSit: this.length - 1,
 				innerHtml: xhr.responseText,
-				node: null, 
-				childNode: null,    //object
+				node: null,
+				childNode: null, //object
 				display: false,
-				returnPage:null,
-				name:url
+				returnPage: null,
+				name: url
 			}
 		});
 		var state = {
-			title:"1",
-			url:this.router[this.length - 1].name
+			title: "1",
+			url: this.router[this.length - 1].name
 		}
-		console.log("url:",state.url);
-		window.history.pushState(state,'1',url);
-		this.state = window.history.state.url;    //获取当前url
+		console.log("url:", state.url);
+		window.history.pushState(state, '1', url);
+		this.state = window.history.state.url; //获取当前url
 		//--------------------伪url
-		var div = document.createElement('div');  
+		var div = document.createElement('div');
 		div.innerHTML = obj.innerHtml;
 		var node = div.getElementsByClassName('Tsdy-router')[0];
 		var script = node.querySelectorAll('script');
@@ -44,7 +45,7 @@
 			}
 			script[i].parentNode.replaceChild(scrnode, script[i]);
 		}
-		var returnPage = document.createElement('div');   //返回按钮
+		var returnPage = document.createElement('label'); //返回按钮
 		returnPage.className = "returnPage";
 		returnPage.innerText = "返回";
 		node.appendChild(returnPage);
@@ -56,7 +57,14 @@
 		this.length++;
 		this.updateOpen(obj);
 		this.renderOpen();
+		obj.node.style.left =  screen.width + 'px';
+		obj.node.getElementsByClassName('returnPage')[0].style.left = screen.width + "px";
 		document.body.appendChild(obj.node); //sddsmvndskvjsljvsj
+		setTimeout(function() {
+			obj.node.style.left= 0;
+			obj.node.getElementsByClassName('returnPage')[0].style.left = 0;
+		}, 1)
+
 
 	}
 
@@ -69,24 +77,27 @@
 			node: father,
 			childNode: children,
 			display: true,
-			name:'/'
+			name: '/'
 		}
 		this.renderOpen();
 		this.router.push(obj);
-		
-		window.addEventListener('popstate',(e)=>{
+
+		window.addEventListener('popstate', (e) => {
 			
+			if(this.returnJudge){
 			this.page = this.length;
-			
-			this.router.forEach((item,key) => {
-				if(item.name == this.state){
-					console.log(this.page," ",item.sit);
-					if(item.sit == this.length - 2 ){
+			console.log("返沪"); 
+			this.router.forEach((item, key) => {
+				if (item.name == this.state) {
+					console.log(this.page, " ", item.sit);
+					if (item.sit == this.length - 2) {
 						this.removePage(this.length - 1);
 						console.log("成功");
 					}
 				}
 			})
+			}else
+				window.history.go(0);
 		})
 		this.addEvent();
 		this.length++;
@@ -96,7 +107,7 @@
 		let nowLength = this.length
 		if (this.router[this.length].childNode.length) {
 
-			
+
 			for (var i = 0; i < this.router[this.length].childNode.length; i++) {
 				let j = i;
 				this.router[nowLength].childNode[j].addEventListener('click', () => {
@@ -108,9 +119,9 @@
 			console.log("没了");
 		}
 
-		if(this.router[this.length].returnPage){
+		if (this.router[this.length].returnPage) {
 			let length = this.length;
-			this.router[this.length].returnPage.addEventListener('click', ()=>{
+			this.router[this.length].returnPage.addEventListener('click', () => {
 				window.history.back();
 			})
 		}
@@ -125,30 +136,39 @@
 				this.router[i].node.style.display = "none";
 			}
 		}
-		
+
 	}
 
 	Tsdy_Router.prototype.updateOpen = function(node) {
 		node.display = true;
 		this.router[node.beforeSit].display = false;
 	}
-	
+
 	Tsdy_Router.prototype.updateClose = function(node) {
 		this.router[node.beforeSit].display = true;
 	}
-	
+
 	Tsdy_Router.prototype.removePage = function(length) {
-		document.body.removeChild(this.router[length].node);
+		this.returnJudge = false;
 		this.updateClose(this.router[length]);
-		this.router.splice(length,1);
-		this.length = length --;
 		this.renderOpen();
-		try{
-			this.state = window.history.state.url;   //获取当前url
-		}catch(e){
-			//TODO handle the exception
-		} 
-		
+		this.router[length].node.style.left = screen.width + "px";
+		this.router[length].node.getElementsByClassName('returnPage')[0].style.left = screen.width + "px";
+		setTimeout(() => {
+			document.body.removeChild(this.router[length].node);
+
+			this.router.splice(length, 1);
+			this.length = length--;
+			
+			try {
+				this.state = window.history.state.url; //获取当前url
+			} catch (e) {
+				//TODO handle the exception
+			}
+			this.returnJudge = true;
+		}, 300);
+
+
 	}
 }());
 

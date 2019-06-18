@@ -1,23 +1,35 @@
 (function() {
 	var Tsdy_Router = window.Tsdy_Router = function(urlList, ...args) {
 		this.router = [];
+		this.page = 0;
+		this,state = null;  //当前页面的url
 		this.length = 0;
 		this.urlList = urlList;
 		this.init();
 	}
 	Tsdy_Router.prototype.ajax_get = function(url) {
+		console.log(url);
 		var obj = null;
 		ajax_get(url, false, (xhr) => {
-			obj = {
+			obj = {   //虚拟dom的属性，
 				sit: this.length,
 				beforeSit: this.length - 1,
 				innerHtml: xhr.responseText,
 				node: null, 
 				childNode: null,    //object
 				display: false,
-				returnPage:null
+				returnPage:null,
+				name:url
 			}
 		});
+		var state = {
+			title:"1",
+			url:this.router[this.length - 1].name
+		}
+		console.log("url:",state.url);
+		window.history.pushState(state,'1',url);
+		this.state = window.history.state.url;    //获取当前url
+		//--------------------伪url
 		var div = document.createElement('div');  
 		div.innerHTML = obj.innerHtml;
 		var node = div.getElementsByClassName('Tsdy-router')[0];
@@ -56,25 +68,38 @@
 			beforeSit: -1,
 			node: father,
 			childNode: children,
-			display: true
+			display: true,
+			name:'/'
 		}
 		this.renderOpen();
 		this.router.push(obj);
+		
+		window.addEventListener('popstate',(e)=>{
+			
+			this.page = this.length;
+			
+			this.router.forEach((item,key) => {
+				if(item.name == this.state){
+					console.log(this.page," ",item.sit);
+					if(item.sit == this.length - 2 ){
+						this.removePage(this.length - 1);
+						console.log("成功");
+					}
+				}
+			})
+		})
 		this.addEvent();
 		this.length++;
 	}
 	//放在length ++ 前
-	Tsdy_Router.prototype.addEvent = function() { //传进来数组
+	Tsdy_Router.prototype.addEvent = function() {
 		let nowLength = this.length
-		console.log(this.length);
-		console.log(this.router[this.length]);
-		console.log(typeof this.router[this.length].childNode);
 		if (this.router[this.length].childNode.length) {
 
 			
 			for (var i = 0; i < this.router[this.length].childNode.length; i++) {
 				let j = i;
-				this.router[this.length].childNode[j].addEventListener('click', () => {
+				this.router[nowLength].childNode[j].addEventListener('click', () => {
 					this.ajax_get(this.urlList[nowLength][j]);
 				})
 
@@ -86,11 +111,7 @@
 		if(this.router[this.length].returnPage){
 			let length = this.length;
 			this.router[this.length].returnPage.addEventListener('click', ()=>{
-				document.body.removeChild(this.router[length].node);
-				this.updateClose(this.router[length]);
-				this.router.splice(length,1);
-				this.length = length --;
-				this.renderOpen();
+				window.history.back();
 			})
 		}
 	}
@@ -104,6 +125,7 @@
 				this.router[i].node.style.display = "none";
 			}
 		}
+		
 	}
 
 	Tsdy_Router.prototype.updateOpen = function(node) {
@@ -113,6 +135,20 @@
 	
 	Tsdy_Router.prototype.updateClose = function(node) {
 		this.router[node.beforeSit].display = true;
+	}
+	
+	Tsdy_Router.prototype.removePage = function(length) {
+		document.body.removeChild(this.router[length].node);
+		this.updateClose(this.router[length]);
+		this.router.splice(length,1);
+		this.length = length --;
+		this.renderOpen();
+		try{
+			this.state = window.history.state.url;   //获取当前url
+		}catch(e){
+			//TODO handle the exception
+		} 
+		
 	}
 }());
 

@@ -1,0 +1,18 @@
+.Tsdy-sideMenu{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    background:rgb(71, 173, 160);
+    transform: translate3d(-100%,0,0);
+    z-index: 9999;
+}
+.go-center{
+    transition: transform 400ms ease;
+    transform: translate3d(0,0,0);
+}
+
+.go-left{
+    transition: transform 400ms ease;
+    transform: translate3d(-100%,0,0);
+}

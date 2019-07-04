@@ -6,8 +6,10 @@
 	top: 50%;
 	margin-left: -16px;
 	margin-top: -16px;
-	background: url(https://tzdy.github.io/Tsdy-module/router/img/loading.gif) no-repeat center center;
-	background-size: 32px 32px;
+}
+,loading img{
+	width:32px;
+	height:32px;
 }
 .loading-off{
 	display: none;

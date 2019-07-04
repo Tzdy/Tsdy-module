@@ -6,10 +6,12 @@
 	top: 50%;
 	margin-left: -16px;
 	margin-top: -16px;
+	z-index:10000;
 }
-,loading img{
+.loading img{
 	width:32px;
 	height:32px;
+	z-index:10000;
 }
 .loading-off{
 	display: none;

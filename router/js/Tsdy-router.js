@@ -2,12 +2,17 @@
 
     function initLoading() {
         var loading = document.createElement('div');
-        loading.classList = "loading loading-off";
-        document.body.appendChild(loading);
-        var prevent = document.createElement('div');
-        prevent.className = "prevent";
-        document.body.appendChild(prevent);
-        return [loading, prevent];
+        var img = document.createElement('img');
+        img.src = "https://tzdy.github.io/Tsdy-module/router/img/loading.gif";
+        img.onload = function(){
+            loading.classList = "loading loading-off";
+            document.body.appendChild(loading);
+            var prevent = document.createElement('div');
+            prevent.className = "prevent";
+            document.body.appendChild(prevent);
+            return [loading, prevent];
+        }
+        
     }
 
     function upLoading(loading) {

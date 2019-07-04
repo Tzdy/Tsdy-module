@@ -1,9 +1,31 @@
 .Tsdy-router{
-	margin-top: 2rem;
+    width: 100%;
+    height: 100%;
+    position: absolute;
 }
-.returnPage{
-	position: fixed;
-	left: 5px;
-	top:5px;
-	z-index: 999;
+
+.left-to-center{
+    animation: left-to-center 400ms forwards;
+}
+
+.right-to-center{
+    animation: right-to-center 400ms forwards;
+}
+
+@keyframes left-to-center{
+    from{
+        transform: translate3d(-100%,0,0);
+    }
+    to{
+        transform: translate3d(0,0,0);
+    }
+}
+
+@keyframes right-to-center{
+    from{
+        transform: translate3d(100%,0,0);
+    }
+    to{
+        transform: translate3d(0,0,0);
+    }
 }

@@ -1,0 +1,24 @@
+.loading{
+	position: absolute;
+	width: 32px;
+	height: 32px;
+	left: 50%;
+	top: 50%;
+	margin-left: -16px;
+	margin-top: -16px;
+	background: url(/public/img/loading.gif) no-repeat center center;
+	background-size: 32px 32px;
+}
+.loading-off{
+	display: none;
+}
+
+.loading-up{
+	display: block;
+}
+
+.prevent{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}

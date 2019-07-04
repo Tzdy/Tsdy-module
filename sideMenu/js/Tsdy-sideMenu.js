@@ -112,10 +112,13 @@ document.getElementsByClassName('content')[0].ontouchstart = function (e) {
 				judge = 1;        
 			}
 			console.log("move");
-			if(num == 1){
+			if(num == 1){  //下拉
 				console.log("stopPro");
 				e.stopPropagation();
 				console.log("stop");
+			}
+			else if(num == 2){ //侧栏
+				e.preventDefault();
 			}
 		}
 		document.getElementsByClassName('content')[0].ontouchend = function (e){

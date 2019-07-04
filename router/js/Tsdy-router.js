@@ -4,14 +4,13 @@
         var loading = document.createElement('div');
         var img = document.createElement('img');
         img.src = "https://tzdy.github.io/Tsdy-module/router/img/loading.gif";
-        img.onload = function(){
             loading.classList = "loading loading-off";
+            loading.appendChild(img);
             document.body.appendChild(loading);
             var prevent = document.createElement('div');
             prevent.className = "prevent";
             document.body.appendChild(prevent);
             return [loading, prevent];
-        }
         
     }
 

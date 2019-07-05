@@ -232,7 +232,7 @@
         }else if(!loading_judge){  //loading时，返回终止loading
             judge = false;
             abortAjax(ajaxObject);
-            this.history.go(1);
+            this.history.forward();
             judge = true;
         }
     })

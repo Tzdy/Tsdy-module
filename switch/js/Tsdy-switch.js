@@ -1,6 +1,6 @@
 (function() {
-	var Tsdy_Switch = window.Tsdy_Switch = function(list) {
-		var x = document.getElementsByClassName('Tsdy-switch');
+	var Tsdy_Switch = window.Tsdy_Switch = function(father, list) {
+		var x = father.getElementsByClassName('Tsdy-switch');
 		this.swi = [];
 		for (var i = 0; i < x.length; i++) {
 			this.swi.push(x[i]);

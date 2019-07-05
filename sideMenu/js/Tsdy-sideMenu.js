@@ -1,4 +1,4 @@
-(function () {
+(window.Tsdy_sideMenu = function () {
 console.log(window);
 var sideMenu = document.getElementsByClassName('Tsdy-sideMenu')[0];
 var father = sideMenu.parentNode;
@@ -127,4 +127,4 @@ document.getElementsByClassName('content')[0].ontouchstart = function (e) {
 		}
 	} 
 } 
-}());
+});

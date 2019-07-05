@@ -1,5 +1,4 @@
-(function () {
-
+(window.Tsdy_router = function() {   //执行
     function initLoading() {
         var loading = document.createElement('div');
         var img = document.createElement('img');
@@ -10,8 +9,7 @@
             var prevent = document.createElement('div');
             prevent.className = "prevent";
             document.body.appendChild(prevent);
-            return [loading, prevent];
-        
+            return [loading, prevent];   
     }
 
     function upLoading(loading) {
@@ -60,6 +58,7 @@
                 scr[i].parentNode.replaceChild(script,scr[i]);
             }
         }
+
     }
 
     function abortAjax(xhr){
@@ -122,14 +121,12 @@
                 }, 400);
             },
             failure() {
-                console.log("failure");
+                offLoading(load);
             },
             loading() {
                 upLoading(load);
             },
-            end() {
-                offLoading(load);
-            }
+            end() {}
         })
     }
 
@@ -167,31 +164,31 @@
 
     //init
     var urlList = [];//存储了返回所需的url
-    var nodeList = [];//内存中的元素。
+    var nodeList = [];//内存中的元素。virtualDom
     var ajaxObject = null;    //当前正在进行的XMLHttpRequest实例
     var loading_judge = true;  //在出现loading时变为false防止用户此时乱按前进返回
-    var state = {
+    var state = {   
         title: 0,
         url: window.location.href
     }
-    urlList.push(state);
+    var judge = true; //防止连续按返回 或 前进。
+    //init
     window.history.pushState({title:0,url:""},0,'/');
-    nodeList.push({
+    urlList.push(state);//刚进入index页面时，将index的state存入urlList，注意此时的window.history.state=null;
+    nodeList.push({   //将index中的Tsdy-router路由节点存入节点列表
         node: document.getElementsByClassName('Tsdy-router')[0],
         sit: nodeList.length,
         url: window.location.href
     })
     addlistener(document);
-    let judge = true; //防止连续按返回 或 前进。
+
     window.addEventListener('popstate', function () {
-        this.console.log(judge,loading_judge);
-        if (judge && loading_judge) {
-            this.console.log("what!");
-            judge = false;
+        if (judge && loading_judge) {   //两个判断都得满足，才可以触发
+            judge = false;     //点一次返回或前进后,再点击就不会再触发这个分支
             try {   //当返回相对index时，window.history.state可能为null，此时this.history.state.title会抛出TypeError
-                if (this.history.state == null || this.history.state.title + 2 == urlList.length) {  //back
+                if (this.history.state.title + 2 == urlList.length) {  //back
+                    
                     urlList.pop();
-                    this.console.log(urlList);
                     let page = productbackPage(nodeList[urlList.length - 1].node);
                     let brother = this.document.getElementsByClassName('Tsdy-router')[0]
                     mounted(page, brother);
@@ -218,11 +215,12 @@
                     judge = true;
                 }, 400);   //400ms为最小点击返回或前进的间隔时间
             } catch (err) {
+                judge = true;
                 this.console.log(err);
             }
         } else if(!judge) {
             try {   //当返回相对index时，window.history.state可能为null，此时this.history.state.title会抛出TypeError
-                if (this.history.state == null || this.history.state.title + 2 == urlList.length) {  //back
+                if (this.history.state.title + 2 == urlList.length) {  //back
                     this.history.forward();
                 }
                 else if (this.history.state.title == urlList.length) {  //go
@@ -234,10 +232,8 @@
         }else if(!loading_judge){  //loading时，返回终止loading
             judge = false;
             abortAjax(ajaxObject);
-            this.history.forward();
+            this.history.go(1);
             judge = true;
-        }else{
-            this.alert("???");
         }
     })
 
@@ -246,4 +242,4 @@
         this.console.log(e);
     })
 
-})()
+}());

@@ -9,7 +9,8 @@
 			var node = document.createElement('div');
 			node.className = "ori";
 			item.classList = "Tsdy-switch switch_ori";
-			item.style = list[key].style;
+			if(list[key].style)
+				item.style = list[key].style;
 			item.appendChild(node);
 			node = null;
 		});

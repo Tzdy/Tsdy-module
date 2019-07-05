@@ -234,6 +234,8 @@
             abortAjax(ajaxObject);
             this.history.forward();
             judge = true;
+        }else{
+            this.alert("???");
         }
     })
 

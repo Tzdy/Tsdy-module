@@ -34,11 +34,9 @@
             var main = node.getElementsByClassName('Tsdy-router')[0];
             node = main ? main : node;
             node.classList = "Tsdy-router right-to-center";
-            scriptActive(node);
             return node;
         } else {
             msg.classList = "Tsdy-router right-to-center";
-            scriptActive(msg);
             return msg;
         }
     }
@@ -118,6 +116,7 @@
                 pushList(page, url);
                 setTimeout(() => {
                     delPage(node);
+                    scriptActive(page);
                     restart(document);
                 }, 400);
             },

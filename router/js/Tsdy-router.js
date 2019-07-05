@@ -109,6 +109,7 @@
             url: url,
             method: method,
             success(msg) {
+                offLoading(load);
                 var page = productgoPage(msg.responseText);  //virtual 中
                 mounted(page, node);
                 pushState(url);   //先执行这个，再执行pushlist注意！
@@ -127,7 +128,7 @@
                 upLoading(load);
             },
             end() {
-                offLoading(load);
+                
             }
         })
     }

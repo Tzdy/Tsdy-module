@@ -128,7 +128,7 @@
                 upLoading(load);
             },
             end() {
-                
+                offLoading(load);
             }
         })
     }

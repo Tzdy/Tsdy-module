@@ -174,7 +174,7 @@
         url: window.location.href
     }
     urlList.push(state);
-    window.history.pushState({title:-1,url:""},0,'/');
+    window.history.pushState({title:0,url:""},0,'/');
     nodeList.push({
         node: document.getElementsByClassName('Tsdy-router')[0],
         sit: nodeList.length,
